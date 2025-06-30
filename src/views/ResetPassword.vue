@@ -11,7 +11,7 @@
         :model="resetForm"
         :rules="resetRules"
         class="auth-form"
-        @submit.prevent="handleReset"
+        @submit.prevent="handleResetPassword"
       >
         <el-form-item prop="email">
           <el-input
@@ -30,7 +30,7 @@
             size="large"
             class="auth-button"
             :loading="loading"
-            @click="handleReset"
+            @click="handleResetPassword"
           >
             {{ loading ? '发送中...' : '发送重置链接' }}
           </el-button>
@@ -43,9 +43,19 @@
         </router-link>
         <span class="auth-divider">|</span>
         <router-link to="/register" class="auth-link">
-          注册新账号
+          还没有账号？立即注册
         </router-link>
       </div>
+
+      <!-- 发送成功提示 -->
+      <el-alert
+        v-if="showSuccessAlert"
+        title="重置链接已发送！"
+        description="请检查您的邮箱并点击重置链接来设置新密码。"
+        type="success"
+        :closable="false"
+        class="success-alert"
+      />
     </div>
   </div>
 </template>
@@ -62,6 +72,8 @@ const router = useRouter()
 const { resetPassword, loading } = useAuth()
 
 const resetFormRef = ref<FormInstance>()
+const showSuccessAlert = ref(false)
+
 const resetForm = reactive<ResetPasswordFormData>({
   email: ''
 })
@@ -69,11 +81,11 @@ const resetForm = reactive<ResetPasswordFormData>({
 const resetRules: FormRules = {
   email: [
     { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-    { type: 'email', message: '请输入有效的邮箱地址', trigger: 'blur' }
+    { type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur' }
   ]
 }
 
-const handleReset = async () => {
+const handleResetPassword = async () => {
   if (!resetFormRef.value) return
 
   try {
@@ -81,37 +93,50 @@ const handleReset = async () => {
     if (!valid) return
 
     const result = await resetPassword(resetForm)
-
+    
     if (result.success) {
-      ElMessage.success('重置链接已发送到您的邮箱，请查收！')
-      router.push('/login')
+      showSuccessAlert.value = true
+      ElMessage.success('重置链接已发送到您的邮箱！')
+      
+      // 5秒后跳转到登录页
+      setTimeout(() => {
+        router.push('/login')
+      }, 5000)
     } else {
-      ElMessage.error(result.error?.message || '发送失败')
+      ElMessage.error(result.error?.message || '发送重置链接失败，请稍后重试')
     }
   } catch (error) {
     console.error('Reset password error:', error)
-    ElMessage.error('重置过程中发生错误')
+    ElMessage.error('发送过程中发生错误，请稍后重试')
   }
 }
 </script>
 
 <style scoped>
 .auth-container {
-  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 20px;
+  margin: 0;
+  box-sizing: border-box;
+  z-index: 1000;
 }
 
 .auth-card {
-  background: white;
+  background: var(--card-bg-color);
   border-radius: 16px;
-  padding: 40px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  padding: 40px;
   width: 100%;
   max-width: 400px;
+  backdrop-filter: blur(10px);
 }
 
 .auth-header {
@@ -122,14 +147,14 @@ const handleReset = async () => {
 .auth-title {
   font-size: 28px;
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--text-color);
   margin: 0 0 8px 0;
 }
 
 .auth-subtitle {
-  color: #7f8c8d;
+  font-size: 16px;
+  color: var(--secondary-text-color);
   margin: 0;
-  font-size: 14px;
 }
 
 .auth-form {
@@ -141,6 +166,7 @@ const handleReset = async () => {
   height: 48px;
   font-size: 16px;
   font-weight: 500;
+  border-radius: 8px;
 }
 
 .auth-links {
@@ -149,30 +175,51 @@ const handleReset = async () => {
   align-items: center;
   justify-content: center;
   gap: 12px;
+  margin-bottom: 20px;
 }
 
 .auth-link {
-  color: #409eff;
+  color: var(--primary-color);
   text-decoration: none;
   font-size: 14px;
-  transition: color 0.3s;
+  transition: color 0.3s ease;
 }
 
 .auth-link:hover {
-  color: #66b1ff;
+  color: var(--primary-color);
+  text-decoration: underline;
 }
 
 .auth-divider {
-  color: #ddd;
+  color: var(--secondary-text-color);
+  font-size: 14px;
 }
 
+.success-alert {
+  margin-top: 16px;
+}
+
+/* 响应式设计 */
 @media (max-width: 480px) {
+  .auth-container {
+    padding: 16px;
+  }
+  
   .auth-card {
     padding: 24px;
   }
   
   .auth-title {
     font-size: 24px;
+  }
+  
+  .auth-links {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .auth-divider {
+    display: none;
   }
 }
 </style>

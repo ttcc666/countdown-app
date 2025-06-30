@@ -62,11 +62,20 @@
       </el-form>
 
       <div class="auth-links">
-        <span>已有账号？</span>
         <router-link to="/login" class="auth-link">
-          立即登录
+          已有账号？立即登录
         </router-link>
       </div>
+
+      <!-- 注册成功提示 -->
+      <el-alert
+        v-if="showSuccessAlert"
+        title="注册成功！"
+        description="请检查您的邮箱并点击确认链接来激活账号。"
+        type="success"
+        :closable="false"
+        class="success-alert"
+      />
     </div>
   </div>
 </template>
@@ -83,6 +92,8 @@ const router = useRouter()
 const { signUp, loading } = useAuth()
 
 const registerFormRef = ref<FormInstance>()
+const showSuccessAlert = ref(false)
+
 const registerForm = reactive<RegisterFormData>({
   email: '',
   password: '',
@@ -105,8 +116,12 @@ const registerRules: FormRules = {
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 6, message: '密码长度至少6位', trigger: 'blur' },
-    { pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}$/, message: '密码必须包含字母和数字', trigger: 'blur' }
+    { min: 6, message: '密码长度不能少于6位', trigger: 'blur' },
+    { 
+      pattern: /^(?=.*[a-zA-Z])(?=.*\d)/, 
+      message: '密码必须包含字母和数字', 
+      trigger: 'blur' 
+    }
   ],
   confirmPassword: [
     { required: true, message: '请确认密码', trigger: 'blur' },
@@ -122,37 +137,50 @@ const handleRegister = async () => {
     if (!valid) return
 
     const result = await signUp(registerForm)
-
+    
     if (result.success) {
-      ElMessage.success('注册成功！请检查邮箱并点击确认链接。')
-      router.push('/login')
+      showSuccessAlert.value = true
+      ElMessage.success('注册成功！请检查邮箱确认链接')
+      
+      // 3秒后跳转到登录页
+      setTimeout(() => {
+        router.push('/login')
+      }, 3000)
     } else {
-      ElMessage.error(result.error?.message || '注册失败')
+      ElMessage.error(result.error?.message || '注册失败，请稍后重试')
     }
   } catch (error) {
     console.error('Register error:', error)
-    ElMessage.error('注册过程中发生错误')
+    ElMessage.error('注册过程中发生错误，请稍后重试')
   }
 }
 </script>
 
 <style scoped>
 .auth-container {
-  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 20px;
+  margin: 0;
+  box-sizing: border-box;
+  z-index: 1000;
 }
 
 .auth-card {
-  background: white;
+  background: var(--card-bg-color);
   border-radius: 16px;
-  padding: 40px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  padding: 40px;
   width: 100%;
   max-width: 400px;
+  backdrop-filter: blur(10px);
 }
 
 .auth-header {
@@ -163,14 +191,14 @@ const handleRegister = async () => {
 .auth-title {
   font-size: 28px;
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--text-color);
   margin: 0 0 8px 0;
 }
 
 .auth-subtitle {
-  color: #7f8c8d;
+  font-size: 16px;
+  color: var(--secondary-text-color);
   margin: 0;
-  font-size: 14px;
 }
 
 .auth-form {
@@ -182,29 +210,36 @@ const handleRegister = async () => {
   height: 48px;
   font-size: 16px;
   font-weight: 500;
+  border-radius: 8px;
 }
 
 .auth-links {
   text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-size: 14px;
-  color: #666;
+  margin-bottom: 20px;
 }
 
 .auth-link {
-  color: #409eff;
+  color: var(--primary-color);
   text-decoration: none;
-  transition: color 0.3s;
+  font-size: 14px;
+  transition: color 0.3s ease;
 }
 
 .auth-link:hover {
-  color: #66b1ff;
+  color: var(--primary-color);
+  text-decoration: underline;
 }
 
+.success-alert {
+  margin-top: 16px;
+}
+
+/* 响应式设计 */
 @media (max-width: 480px) {
+  .auth-container {
+    padding: 16px;
+  }
+  
   .auth-card {
     padding: 24px;
   }

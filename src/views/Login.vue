@@ -55,7 +55,7 @@
         </router-link>
         <span class="auth-divider">|</span>
         <router-link to="/register" class="auth-link">
-          注册新账号
+          还没有账号？立即注册
         </router-link>
       </div>
     </div>
@@ -64,13 +64,14 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { Message, Lock } from '@element-plus/icons-vue'
 import { useAuth } from '../composables/useAuth'
 import type { LoginFormData } from '../types/auth'
 
 const router = useRouter()
+const route = useRoute()
 const { signIn, loading } = useAuth()
 
 const loginFormRef = ref<FormInstance>()
@@ -82,11 +83,11 @@ const loginForm = reactive<LoginFormData>({
 const loginRules: FormRules = {
   email: [
     { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-    { type: 'email', message: '请输入有效的邮箱地址', trigger: 'blur' }
+    { type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur' }
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 6, message: '密码长度至少6位', trigger: 'blur' }
+    { min: 6, message: '密码长度不能少于6位', trigger: 'blur' }
   ]
 }
 
@@ -98,37 +99,48 @@ const handleLogin = async () => {
     if (!valid) return
 
     const result = await signIn(loginForm)
-
+    
     if (result.success) {
       ElMessage.success('登录成功！')
-      router.push('/')
+      
+      // 重定向到原来要访问的页面或首页
+      const redirectPath = (route.query.redirect as string) || '/'
+      router.push(redirectPath)
     } else {
-      ElMessage.error(result.error?.message || '登录失败')
+      ElMessage.error(result.error?.message || '登录失败，请检查邮箱和密码')
     }
   } catch (error) {
     console.error('Login error:', error)
-    ElMessage.error('登录过程中发生错误')
+    ElMessage.error('登录过程中发生错误，请稍后重试')
   }
 }
 </script>
 
 <style scoped>
 .auth-container {
-  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 20px;
+  margin: 0;
+  box-sizing: border-box;
+  z-index: 1000;
 }
 
 .auth-card {
-  background: white;
+  background: var(--card-bg-color);
   border-radius: 16px;
-  padding: 40px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  padding: 40px;
   width: 100%;
   max-width: 400px;
+  backdrop-filter: blur(10px);
 }
 
 .auth-header {
@@ -139,14 +151,14 @@ const handleLogin = async () => {
 .auth-title {
   font-size: 28px;
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--text-color);
   margin: 0 0 8px 0;
 }
 
 .auth-subtitle {
-  color: #7f8c8d;
+  font-size: 16px;
+  color: var(--secondary-text-color);
   margin: 0;
-  font-size: 14px;
 }
 
 .auth-form {
@@ -158,6 +170,7 @@ const handleLogin = async () => {
   height: 48px;
   font-size: 16px;
   font-weight: 500;
+  border-radius: 8px;
 }
 
 .auth-links {
@@ -169,27 +182,43 @@ const handleLogin = async () => {
 }
 
 .auth-link {
-  color: #409eff;
+  color: var(--primary-color);
   text-decoration: none;
   font-size: 14px;
-  transition: color 0.3s;
+  transition: color 0.3s ease;
 }
 
 .auth-link:hover {
-  color: #66b1ff;
+  color: var(--primary-color);
+  text-decoration: underline;
 }
 
 .auth-divider {
-  color: #ddd;
+  color: var(--secondary-text-color);
+  font-size: 14px;
 }
 
+/* 响应式设计 */
 @media (max-width: 480px) {
+  .auth-container {
+    padding: 16px;
+  }
+  
   .auth-card {
     padding: 24px;
   }
   
   .auth-title {
     font-size: 24px;
+  }
+  
+  .auth-links {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .auth-divider {
+    display: none;
   }
 }
 </style>

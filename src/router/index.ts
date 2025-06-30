@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useAuth } from '../composables/useAuth'
 
 // 路由组件懒加载
-const MainApp = () => import('../App.vue')
 const Login = () => import('../views/Login.vue')
 const Register = () => import('../views/Register.vue')
 const ResetPassword = () => import('../views/ResetPassword.vue')
@@ -11,7 +10,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: MainApp,
+    component: { template: '<div></div>' }, // 空组件，实际内容由 AppRoot 处理
     meta: { requiresAuth: true }
   },
   {

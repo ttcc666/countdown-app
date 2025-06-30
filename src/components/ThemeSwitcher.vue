@@ -1,53 +1,50 @@
 <template>
-  <el-button
-    :icon="isDark ? Sunny : Moon"
-    circle
-    size="small"
-    @click="toggleTheme"
-    :title="isDark ? '切换到浅色主题' : '切换到深色主题'"
-  />
+  <div class="theme-switcher">
+    <el-radio-group v-model="selectedTheme" size="small">
+      <el-radio-button value="light">浅色模式</el-radio-button>
+      <el-radio-button value="dark">深色模式</el-radio-button>
+    </el-radio-group>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { Sunny, Moon } from '@element-plus/icons-vue'
+import { ref, watch, onMounted } from 'vue'
 
-const isDark = ref(false)
+const selectedTheme = ref('light')
 
-const toggleTheme = () => {
-  isDark.value = !isDark.value
-  updateTheme()
-  saveThemePreference()
-}
-
-const updateTheme = () => {
-  if (isDark.value) {
-    document.body.classList.add('dark-theme')
-  } else {
-    document.body.classList.remove('dark-theme')
-  }
-}
-
-const saveThemePreference = () => {
-  localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
-}
-
-const loadThemePreference = () => {
+// 从 localStorage 加载保存的主题
+onMounted(() => {
   const savedTheme = localStorage.getItem('theme')
   if (savedTheme) {
-    isDark.value = savedTheme === 'dark'
-  } else {
-    // 检查系统主题偏好
-    isDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches
+    selectedTheme.value = savedTheme
   }
-  updateTheme()
-}
-
-onMounted(() => {
-  loadThemePreference()
+  applyTheme(selectedTheme.value)
 })
+
+// 监听主题变化并应用
+watch(selectedTheme, (newTheme) => {
+  applyTheme(newTheme)
+  localStorage.setItem('theme', newTheme)
+})
+
+const applyTheme = (theme: string) => {
+  document.body.classList.remove('light-theme', 'dark-theme')
+  document.body.classList.add(`${theme}-theme`)
+}
 </script>
 
 <style scoped>
-/* 组件样式已在全局样式中定义 */
+.theme-switcher {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+@media (max-width: 768px) {
+  .theme-switcher {
+    top: 10px;
+    right: 10px;
+  }
+}
 </style>
