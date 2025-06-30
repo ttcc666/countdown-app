@@ -89,7 +89,8 @@ const registerForm = reactive<RegisterFormData>({
   confirmPassword: ''
 })
 
-const validatePasswordConfirm = (rule: any, value: any, callback: any) => {
+// 自定义验证规则
+const validateConfirmPassword = (_: any, value: string, callback: any) => {
   if (value !== registerForm.password) {
     callback(new Error('两次输入的密码不一致'))
   } else {
@@ -100,15 +101,16 @@ const validatePasswordConfirm = (rule: any, value: any, callback: any) => {
 const registerRules: FormRules = {
   email: [
     { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-    { type: 'email', message: '请输入有效的邮箱地址', trigger: 'blur' }
+    { type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur' }
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 6, message: '密码长度至少6位', trigger: 'blur' }
+    { min: 6, message: '密码长度至少6位', trigger: 'blur' },
+    { pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}$/, message: '密码必须包含字母和数字', trigger: 'blur' }
   ],
   confirmPassword: [
     { required: true, message: '请确认密码', trigger: 'blur' },
-    { validator: validatePasswordConfirm, trigger: 'blur' }
+    { validator: validateConfirmPassword, trigger: 'blur' }
   ]
 }
 
