@@ -1,0 +1,142 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  /* 默认主题变量 (浅色) */
+  --bg-color: #e9ecef;
+  --text-color: #2c3e50;
+  --card-bg-color: #ffffff;
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --primary-color: #409eff;
+  --secondary-text-color: #666;
+  --finished-color: #67c23a;
+
+  /* Element Plus 变量 */
+  --el-color-primary: var(--primary-color);
+  --el-color-success: var(--finished-color);
+  --el-color-warning: #e6a23c;
+  --el-color-danger: #f56c6c;
+  --el-color-error: #f56c6c;
+  --el-color-info: #909399;
+
+  --el-bg-color: var(--bg-color);
+  --el-bg-color-overlay: var(--card-bg-color);
+  --el-text-color-primary: var(--text-color);
+  --el-text-color-regular: var(--secondary-text-color);
+  --el-border-color-light: #dcdfe6;
+  --el-border-color-lighter: #ebeef5;
+  --el-border-color-extra-light: #f2f6fc;
+
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* 深色主题 */
+body.dark-theme {
+  --bg-color: #2c2c2c;
+  --text-color: #f0f0f0;
+  --card-bg-color: #3a3a3a;
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --primary-color: #66b1ff;
+  --secondary-text-color: #bbb;
+  --finished-color: #95d475;
+
+  /* Element Plus 深色主题变量 */
+  --el-color-primary: var(--primary-color);
+  --el-color-success: var(--finished-color);
+  --el-color-warning: #cf9236;
+  --el-color-danger: #e88080;
+  --el-color-error: #e88080;
+  --el-color-info: #a6a9ad;
+
+  --el-bg-color: var(--bg-color);
+  --el-bg-color-overlay: #414243;
+  --el-text-color-primary: var(--text-color);
+  --el-text-color-regular: var(--secondary-text-color);
+  --el-border-color-light: #4c4d4d;
+  --el-border-color-lighter: #414243;
+  --el-border-color-extra-light: #363637;
+}
+
+#app {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* 主应用容器样式 */
+#app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+/* 调整 CountdownList 和 Settings 组件的样式以使用 CSS 变量 */
+.countdown-list-container h1,
+.settings-container h2 {
+  color: var(--text-color);
+}
+
+.countdown-card {
+  background-color: var(--card-bg-color);
+  box-shadow: var(--card-shadow);
+}
+
+.countdown-card .card-header span,
+.countdown-card .time-label-small {
+  color: var(--secondary-text-color);
+}
+
+.countdown-card .time-value-small {
+  color: var(--primary-color);
+}
+
+.countdown-card .finished-message-small {
+  color: var(--finished-color);
+}
+
+.settings-container {
+  background-color: var(--card-bg-color);
+  box-shadow: var(--card-shadow);
+}
+
+.settings-container h2 {
+  color: var(--text-color);
+}
+
+.no-countdowns {
+  color: var(--secondary-text-color);
+}
