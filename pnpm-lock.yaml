@@ -1,0 +1,99 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      '@element-plus/icons-vue':
+        specifier: ^2.3.1
+        version: 2.3.1(vue@3.5.17(typescript@5.8.3))
+      '@supabase/supabase-js':
+        specifier: ^2.50.2
+        version: 2.50.2
+      element-plus:
+        specifier: ^2.10.2
+        version: 2.10.2(vue@3.5.17(typescript@5.8.3))
+      uuid:
+        specifier: ^11.1.0
+        version: 11.1.0
+      vue:
+        specifier: ^3.5.17
+        version: 3.5.17(typescript@5.8.3)
+      vue-draggable-plus:
+        specifier: ^0.6.0
+        version: 0.6.0(@types/sortablejs@1.15.8)
+      vue-router:
+        specifier: '4'
+        version: 4.5.1(vue@3.5.17(typescript@5.8.3))
+    devDependencies:
+      '@vitejs/plugin-vue':
+        specifier: ^5.2.1
+        version: 5.2.4(vite@6.3.5(@types/node@24.0.7))(vue@3.5.17(typescript@5.8.3))
+      '@vue/tsconfig':
+        specifier: ^0.7.0
+        version: 0.7.0(typescript@5.8.3)(vue@3.5.17(typescript@5.8.3))
+      electron:
+        specifier: ^37.1.0
+        version: 37.1.0
+      electron-builder:
+        specifier: ^26.0.12
+        version: 26.0.12(electron-builder-squirrel-windows@26.0.12)
+      typescript:
+        specifier: ~5.8.3
+        version: 5.8.3
+      vite:
+        specifier: ^6.0.0
+        version: 6.3.5(@types/node@24.0.7)
+      vue-tsc:
+        specifier: ^2.2.10
+        version: 2.2.10(typescript@5.8.3)
+
+packages:
+
+  '@element-plus/icons-vue@2.3.1':
+    resolution: {integrity: sha512-XxVUZv48RZAd87ucGS48jPf6pKu0yV5UCg9f4FFwtrYxXOwWuVJo6wOvSLKEoMQKjv8GsX/mhP6UsC1lRwbUWg==}
+    peerDependencies:
+      vue: ^3.2.0
+
+  '@supabase/supabase-js@2.50.2':
+    resolution: {integrity: sha512-2Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQ==}
+
+  'element-plus@2.10.2':
+    resolution: {integrity: sha512-2Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQ==}
+    peerDependencies:
+      vue: ^3.2.0
+
+  'uuid@11.1.0':
+    resolution: {integrity: sha512-2Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQ==}
+
+  'vue@3.5.17':
+    resolution: {integrity: sha512-2Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQ==}
+    peerDependencies:
+      typescript: '*'
+
+  'vue-draggable-plus@0.6.0':
+    resolution: {integrity: sha512-2Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQ==}
+
+  'vue-router@4.5.1':
+    resolution: {integrity: sha512-2Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQ==}
+    peerDependencies:
+      vue: ^3.2.0
+
+  '@vitejs/plugin-vue@5.2.4':
+    resolution: {integrity: sha512-2Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQ==}
+    peerDependencies:
+      vite: ^5.0.0 || ^6.0.0
+      vue: ^3.2.25
+
+  'typescript@5.8.3':
+    resolution: {integrity: sha512-2Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQ==}
+
+  'vite@6.3.5':
+    resolution: {integrity: sha512-2Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQ==}
+
+  'vue-tsc@2.2.10':
+    resolution: {integrity: sha512-2Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQqI8Ej8Ey8zOQ==}
