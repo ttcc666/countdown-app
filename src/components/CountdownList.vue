@@ -77,7 +77,8 @@ interface Emits {
   (e: 'edit-countdown', countdown: CountdownItem): void
 }
 
-const props = defineProps<Props>()
+// 使用 defineProps 和 defineEmits，不需要声明 props 变量
+defineProps<Props>()
 const emit = defineEmits<Emits>()
 
 const timer = ref<number | null>(null)
